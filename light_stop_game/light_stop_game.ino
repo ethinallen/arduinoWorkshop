@@ -7,6 +7,8 @@ CRGB leds[NUM_LEDS*3];
 int light_speed = 500;
 long stop_pos = 0;
 int brightness = 100;
+int time_open = 0;
+int time_closed = 0;
 
 void setup() {
    FastLED.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);
@@ -15,6 +17,11 @@ void setup() {
    for (int i = 0;i< NUM_LEDS*3;i++) {
     leds[i] = CRGB(0,0,0);
    }
+
+   Serial.begin(9600);
+
+   attachInterrupt(digitalPinToInterrupt(button), win, FALLING);
+
 
 }
 
@@ -36,13 +43,19 @@ void loop() {
         FastLED.show();
         delay(light_speed);
 
-         if ( digitalRead(button) == LOW) {
-          win();
-        }
-        
-        leds[i] = CRGB(brightness,brightness,brightness);
-      }
-    }
+//        time_open = millis();
+//        time_closed = millis();
+//        while (time_closed - time_open < light_speed){
+//          Serial.println("OPEN");
+//          if ( digitalRead(button) == LOW) {
+//            win();
+//          }
+//          time_closed = millis();
+//        }
+//        
+//        leds[i] = CRGB(brightness,brightness,brightness);
+//      }
+//    }
   
     for (int i = NUM_LEDS-2;i > 0 ;i--) {
       if (stop_pos != i) {
@@ -55,9 +68,9 @@ void loop() {
         FastLED.show();
         delay(light_speed);
 
-        if ( digitalRead(button) == LOW) {
-          win();
-        }
+//        if ( digitalRead(button) == LOW) {
+//          win();
+//        }
         
         leds[i] = CRGB(brightness,brightness,brightness);
       }
